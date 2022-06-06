@@ -89,4 +89,6 @@ export const RepoList = styled.ol `
   display: flex;
   flex-wrap: wrap;
   align-content: baseline;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 `;
