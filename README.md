@@ -8,6 +8,14 @@ The project aims to use a fully componentized structure, styled components and r
 
 To see the original project by Matheus Benites access the [link](https://github.com/benits/github-api-interface).
 
+
+
+
+https://user-images.githubusercontent.com/39228691/172089450-35891b31-c9c3-4949-8f8b-8d14257a3c03.mp4
+
+
+
+
 ### **Dependencies used:**
 
 1. [axios](https://www.npmjs.com/package/axios)
