@@ -10,6 +10,26 @@ export const SearchWrapper = styled.div`
   flex: auto;
 `;
 
+export const LogoWrapper = styled.a `
+  text-decoration: none;
+  margin-right: 12px;
+
+  & > svg {
+    width: 32px;
+    height: 32px;
+    fill: #cdd9e5;
+    overflow: visible;
+    vertical-align: text-bottom;
+  }
+  & > svg > path {
+    transform: scale(2);
+  }
+
+  &:hover , &:hover > svg {
+    fill: #539bf5;
+  }
+`;
+
 export const InputWrapper = styled.input`
   width: 40vw;
   height: 30px;
