@@ -13,6 +13,7 @@ const GithubProvider = ({children}) => {
   const [ profileState, setProfileState ] = useState({
     loading: false,
     hasData: false,
+    found: undefined,
     user:{
       login: undefined,
       id: undefined,
@@ -40,46 +41,60 @@ const GithubProvider = ({children}) => {
 
     setProfileState( ( prevState ) => ({
       ...prevState,
-      loading: !prevState.loading
+      loading: true,
+      found: undefined
     }));
 
-    api.get(`${username}`).then( ({ data }) => {
-      setProfileState( ( prevState ) => ({
+    const userNotFound = () => {
+      setProfileState( (prevState) => ({
         ...prevState,
-        hasData: true,
-        user:{
-          login: data.login,
-          id: data.id,
-          avatar_url: data.avatar_url,
-          html_url: data.html_url,
-          followers_url: data.followers_url,
-          following_url: data.following_url,
-          gists_url: data.gists_url,
-          starred_url: data.starred_url,
-          repos_url: data.repos_url,
-          name: data.name,
-          bio: data.bio,
-          public_repos: data.public_repos,
-          followers: data.followers,
-          following: data.following,
-          created_at: data.created_at,
-          updated_at: data.updated_at
+        found: false
+      }));
+    }
+
+    setTimeout(() => {
+      api.get(`${username}`).then( ({ data }) => {
+        setProfileState((prevState) => ({
+          ...prevState,
+          hasData: true,
+          found: true,
+          user: {
+            login: data.login,
+            id: data.id,
+            avatar_url: data.avatar_url,
+            html_url: data.html_url,
+            followers_url: data.followers_url,
+            following_url: data.following_url,
+            gists_url: data.gists_url,
+            starred_url: data.starred_url,
+            repos_url: data.repos_url,
+            name: data.name,
+            bio: data.bio,
+            public_repos: data.public_repos,
+            followers: data.followers,
+            following: data.following,
+            created_at: data.created_at,
+            updated_at: data.updated_at
+          }
+        }));
+      }).finally(() => {
+        setProfileState( ( prevState ) => ({
+          ...prevState,
+          loading: false,
+        }));
+      }).catch((e) =>{
+        if (e.response.data.message === "Not Found")
+        {
+          console.log("User not found!");
+          userNotFound();
         }
-      }));
-    }).finally(() => {
-      setProfileState( ( prevState ) => ({
-        ...prevState,
-        loading: !prevState.loading
-      }));
-    })
+      })
+    }, 1000);
+    
   };
 
   const getUserRepositories = ( username ) => {
     api.get(`${username}/repos`).then( ( {data} ) => {
-
-      console.log("--------------------");
-      console.log(data);
-      console.log("--------------------");
       setProfileState( ( prevState ) => ({
         ...prevState,
         repositories: data
